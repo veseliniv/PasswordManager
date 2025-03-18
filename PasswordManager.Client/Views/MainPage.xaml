@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<uraniumUI:UraniumContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                              xmlns:uraniumUI="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+                              xmlns:uraniumUIMaterial="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+                              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+                              xmlns:viewModel="clr-namespace:PasswordManager.API.ViewModels;assembly=PasswordManager.API"
+                              xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
+                              x:DataType="viewModel:SiteViewModel"
+                              x:Class="PasswordManager.Client.MainPage">
+    
+    <uraniumUI:UraniumContentPage.Attachments>
+        <uraniumUIMaterial:BackdropView BackgroundColor="Transparent">
+            <uraniumUIMaterial:BackdropView.IconImageSource>
+                <FontImageSource Glyph="{x:Static fa:Solid.Plus}" Color="Purple"/>
+            </uraniumUIMaterial:BackdropView.IconImageSource>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <VerticalStackLayout Grid.Row="0">
+
+                    <uraniumUIMaterial:TextField Title="Enter Site"/>
+                    
+                    <uraniumUIMaterial:TextField Title="Generated Password" IsReadOnly="True" IsEnabled="True"/>
+
+                </VerticalStackLayout>
+                
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                                Text="Get All Sites" 
+                                Margin="10, 10, 10, 0" 
+                                Command="{Binding SignInUserCommand}"/>
+
+                    <Button Grid.Column="1"
+                                Text="Add Site" 
+                                Margin="10, 10, 10, 0"
+                                Command="{Binding AddSiteCommand}"/>
+
+                    <Button Grid.Column="2" 
+                                Text="Show Passwords" 
+                                Margin="10, 10, 10, 0"/>
+
+                </Grid>
+            </Grid>
+        </uraniumUIMaterial:BackdropView>
+    </uraniumUI:UraniumContentPage.Attachments>
+    
+    <ScrollView>
+        
+        <Grid>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="1">
+                
+                <uraniumUIMaterial:DataGrid x:Name="Empty"
+                                   ItemsSource="{Binding Sites}"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Fill"
+                                   HorizontalOptions="Fill">
+                    <uraniumUIMaterial:DataGrid.Columns>
+
+                        <uraniumUIMaterial:DataGridColumn Title="Site Name" ValueBinding="{Binding Name}" Width="*">
+                            <uraniumUIMaterial:DataGridColumn.CellItemTemplate>
+                                <DataTemplate>
+                                    <Button Background="Transparent"/>
+                                </DataTemplate>
+                            </uraniumUIMaterial:DataGridColumn.CellItemTemplate>
+                        </uraniumUIMaterial:DataGridColumn>
+
+                    </uraniumUIMaterial:DataGrid.Columns>
+                    
+                </uraniumUIMaterial:DataGrid>
+
+            </Grid>
+            
+        </Grid>
+    </ScrollView>
+</uraniumUI:UraniumContentPage>
