@@ -11,7 +11,6 @@ namespace PasswordManager.DAL.PasswordManagerDbContextEntities.DbContextEntities
         public PasswordManagerDBEntities()
         {
             Connection = new SQLiteConnection(Path.Combine(FileSystem.AppDataDirectory, dbPath), true);
-            Connection.CreateTable<Site>();
             Connection.CreateTable<Password>();
         }
     }

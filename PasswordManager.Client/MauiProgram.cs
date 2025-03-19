@@ -22,7 +22,7 @@ public static class MauiProgram
                 fonts.AddFontAwesomeIconFonts();
             });
         builder.Services.AddTransient<MainPage>();
-        builder.Services.AddTransient<SiteViewModel>();
+        builder.Services.AddTransient<PasswordViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();

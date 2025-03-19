@@ -7,8 +7,8 @@ namespace PasswordManager.API.Models
         public int ID { get; set; }
 
         [Required]
-        public string Encrypted { get; set; }
+        public string Pass { get; set; }
 
-        public SiteModel Site { get; set; } = new SiteModel();
+        public string SiteName { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
 
 namespace PasswordManager.DAL.PasswordManagerDbContextEntities.Models
 {
@@ -9,10 +8,8 @@ namespace PasswordManager.DAL.PasswordManagerDbContextEntities.Models
         [PrimaryKey, AutoIncrement, Column("ID")]
         public int ID { get; set; }
 
-        [Column("Encrypted")]
-        public string Encrypted { get; set; }
+        public string Pass { get; set; }
 
-        [OneToOne]
-        public Site Site { get; set; } = new Site();
+        public string SiteName { get; set; }
     }
 }

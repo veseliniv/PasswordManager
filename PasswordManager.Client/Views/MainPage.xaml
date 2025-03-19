@@ -6,13 +6,15 @@
                               xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
                               xmlns:viewModel="clr-namespace:PasswordManager.API.ViewModels;assembly=PasswordManager.API"
                               xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
-                              x:DataType="viewModel:SiteViewModel"
+                              x:DataType="viewModel:PasswordViewModel"
                               x:Class="PasswordManager.Client.MainPage">
     
     <uraniumUI:UraniumContentPage.Attachments>
         <uraniumUIMaterial:BackdropView BackgroundColor="Transparent">
             <uraniumUIMaterial:BackdropView.IconImageSource>
-                <FontImageSource Glyph="{x:Static fa:Solid.Plus}" Color="Purple"/>
+                <FontImageSource Glyph="{x:Static fa:Solid.Plus}" 
+                                 Color="DarkSlateBlue" 
+                                 ToolTipProperties.Text="Add New Password"/>
             </uraniumUIMaterial:BackdropView.IconImageSource>
 
             <Grid>
@@ -22,32 +24,17 @@
                 </Grid.RowDefinitions>
                 <VerticalStackLayout Grid.Row="0">
 
-                    <uraniumUIMaterial:TextField Title="Enter Site"/>
+                    <uraniumUIMaterial:TextField Title="Enter Site" Text="{Binding Sitename, Mode=OneWayToSource}"/>
                     
-                    <uraniumUIMaterial:TextField Title="Generated Password" IsReadOnly="True" IsEnabled="True"/>
+                    <uraniumUIMaterial:TextField Title="Generated Password" Text="{Binding Pass, Mode=OneWayToSource}"/>
 
                 </VerticalStackLayout>
                 
                 <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <Button Grid.Column="0"
-                                Text="Get All Sites" 
-                                Margin="10, 10, 10, 0" 
-                                Command="{Binding SignInUserCommand}"/>
-
-                    <Button Grid.Column="1"
-                                Text="Add Site" 
-                                Margin="10, 10, 10, 0"
-                                Command="{Binding AddSiteCommand}"/>
-
-                    <Button Grid.Column="2" 
-                                Text="Show Passwords" 
-                                Margin="10, 10, 10, 0"/>
+                    
+                    <Button Text="Add Password" 
+                            Margin="10, 10, 10, 0"
+                            Command="{Binding AddPasswordCommand}"/>
 
                 </Grid>
             </Grid>
@@ -67,19 +54,15 @@
             <Grid Grid.Row="1">
                 
                 <uraniumUIMaterial:DataGrid x:Name="Empty"
-                                   ItemsSource="{Binding Sites}"
-                                   BackgroundColor="Transparent"
-                                   VerticalOptions="Fill"
-                                   HorizontalOptions="Fill">
+                                            ItemsSource="{Binding Passwords}"
+                                            BackgroundColor="Transparent"
+                                            VerticalOptions="Fill"
+                                            HorizontalOptions="Fill"
+                                            UseAutoColumns="false">
                     <uraniumUIMaterial:DataGrid.Columns>
 
-                        <uraniumUIMaterial:DataGridColumn Title="Site Name" ValueBinding="{Binding Name}" Width="*">
-                            <uraniumUIMaterial:DataGridColumn.CellItemTemplate>
-                                <DataTemplate>
-                                    <Button Background="Transparent"/>
-                                </DataTemplate>
-                            </uraniumUIMaterial:DataGridColumn.CellItemTemplate>
-                        </uraniumUIMaterial:DataGridColumn>
+                        <uraniumUIMaterial:DataGridColumn Title="Site Name" ValueBinding="{Binding SiteName}" Width="*"/>
+
 
                     </uraniumUIMaterial:DataGrid.Columns>
                     
