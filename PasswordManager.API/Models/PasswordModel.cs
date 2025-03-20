@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace PasswordManager.API.Models
 {
@@ -6,7 +7,6 @@ namespace PasswordManager.API.Models
     {
         public int ID { get; set; }
 
-        [Required]
         public string Pass { get; set; }
 
         public string SiteName { get; set; }

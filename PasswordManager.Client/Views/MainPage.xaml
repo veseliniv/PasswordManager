@@ -3,6 +3,7 @@
                               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                               xmlns:uraniumUI="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
                               xmlns:uraniumUIMaterial="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+                              xmlns:validation="clr-namespace:UraniumUI.Validations;assembly=UraniumUI.Validations.DataAnnotations"
                               xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
                               xmlns:viewModel="clr-namespace:PasswordManager.API.ViewModels;assembly=PasswordManager.API"
                               xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
@@ -24,17 +25,26 @@
                 </Grid.RowDefinitions>
                 <VerticalStackLayout Grid.Row="0">
 
-                    <uraniumUIMaterial:TextField Title="Enter Site" Text="{Binding Sitename, Mode=OneWayToSource}"/>
-                    
-                    <uraniumUIMaterial:TextField Title="Generated Password" Text="{Binding Pass, Mode=OneWayToSource}"/>
+                    <uraniumUIMaterial:TextField Title="Enter Site" Text="{Binding NewPassword.SiteName, Mode=OneWayToSource}"/>
+
+                    <uraniumUIMaterial:TextField Title="Generated Password" Text="{Binding GenPass, Mode=TwoWay}"/>
 
                 </VerticalStackLayout>
                 
                 <Grid Grid.Row="1">
-                    
-                    <Button Text="Add Password" 
-                            Margin="10, 10, 10, 0"
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" 
+                            Text="Add Password" 
+                            Margin="0, 5, 5, 0"
                             Command="{Binding AddPasswordCommand}"/>
+                    
+                    <Button Grid.Column="1" 
+                            Text="Generate Password"  
+                            Margin="5, 5, 0, 0"
+                            Command="{Binding GeneratePasswordCommand}"/>
 
                 </Grid>
             </Grid>
@@ -61,7 +71,16 @@
                                             UseAutoColumns="false">
                     <uraniumUIMaterial:DataGrid.Columns>
 
-                        <uraniumUIMaterial:DataGridColumn Title="Site Name" ValueBinding="{Binding SiteName}" Width="*"/>
+                        <uraniumUIMaterial:DataGridColumn Title="Site Name" ValueBinding="{Binding SiteName}" Width="*">
+                            <uraniumUIMaterial:DataGridColumn.CellItemTemplate>
+                                <DataTemplate>
+                                    <uraniumUI:ExpanderView>
+                                        <Label Text="{Binding Pass}" />
+                                    </uraniumUI:ExpanderView>
+                                </DataTemplate>
+                            </uraniumUIMaterial:DataGridColumn.CellItemTemplate>
+                            
+                        </uraniumUIMaterial:DataGridColumn>
 
 
                     </uraniumUIMaterial:DataGrid.Columns>
