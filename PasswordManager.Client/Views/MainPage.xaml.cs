@@ -1,4 +1,5 @@
 ﻿using PasswordManager.API.ViewModels;
+using Plugin.Maui.Biometric;
 using UraniumUI.Pages;
 
 namespace PasswordManager.Client

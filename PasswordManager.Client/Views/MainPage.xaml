@@ -11,13 +11,7 @@
                               x:Class="PasswordManager.Client.MainPage">
     
     <uraniumUI:UraniumContentPage.Attachments>
-        <uraniumUIMaterial:BackdropView BackgroundColor="Transparent">
-            <uraniumUIMaterial:BackdropView.IconImageSource>
-                <FontImageSource Glyph="{x:Static fa:Solid.Plus}" 
-                                 Color="DarkSlateBlue" 
-                                 ToolTipProperties.Text="Add New Password"/>
-            </uraniumUIMaterial:BackdropView.IconImageSource>
-
+        <uraniumUIMaterial:BottomSheetView BackgroundColor="WhiteSmoke">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -30,17 +24,57 @@
                     <uraniumUIMaterial:TextField Title="Generated Password" Text="{Binding GenPass, Mode=TwoWay}"/>
 
                 </VerticalStackLayout>
-                
-                <Grid Grid.Row="1">
+
+                <Grid Grid.Row="1" Margin="0, 0, 0, 10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" 
+                Text="Add Password" 
+                Margin="0, 5, 5, 0"
+                Command="{Binding AddPasswordCommand}"/>
+
+                    <Button Grid.Column="1" 
+                Text="Generate Password"  
+                Margin="5, 5, 0, 0"
+                Command="{Binding GeneratePasswordCommand}"/>
+
+                </Grid>
+            </Grid>
+        </uraniumUIMaterial:BottomSheetView>
+        <!--<uraniumUIMaterial:BackdropView BackgroundColor="Transparent">
+            <uraniumUIMaterial:BackdropView.IconImageSource>
+                <FontImageSource Glyph="{x:Static fa:Solid.Plus}" 
+                                 Color="DarkSlateBlue" 
+                                 ToolTipProperties.Text="Add New Password"/>
+            </uraniumUIMaterial:BackdropView.IconImageSource>
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <VerticalStackLayout Grid.Row="0">
+
+                    <uraniumUIMaterial:TextField Title="Enter Site" Text="{Binding NewPassword.SiteName, Mode=OneWayToSource}"/>
+
+                    <uraniumUIMaterial:TextField Title="Generated Password" Text="{Binding GenPass, Mode=TwoWay}"/>
+
+                </VerticalStackLayout>
+
+                <Grid Grid.Row="1" Margin="0, 0, 0, 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
                     <Button Grid.Column="0" 
                             Text="Add Password" 
                             Margin="0, 5, 5, 0"
                             Command="{Binding AddPasswordCommand}"/>
-                    
+
                     <Button Grid.Column="1" 
                             Text="Generate Password"  
                             Margin="5, 5, 0, 0"
@@ -48,45 +82,74 @@
 
                 </Grid>
             </Grid>
-        </uraniumUIMaterial:BackdropView>
+
+        </uraniumUIMaterial:BackdropView>-->
     </uraniumUI:UraniumContentPage.Attachments>
     
     <ScrollView>
-        
+
         <Grid>
-            
             <Grid.RowDefinitions>
-                <RowDefinition Height="5*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="15*"/>
                 <RowDefinition Height="5*"/>
             </Grid.RowDefinitions>
-            
-            <Grid Grid.Row="1">
-                
-                <uraniumUIMaterial:DataGrid x:Name="Empty"
-                                            ItemsSource="{Binding Passwords}"
-                                            BackgroundColor="Transparent"
-                                            VerticalOptions="Fill"
-                                            HorizontalOptions="Fill"
-                                            UseAutoColumns="false">
-                    <uraniumUIMaterial:DataGrid.Columns>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                        <uraniumUIMaterial:DataGridColumn Title="Site Name" ValueBinding="{Binding SiteName}" Width="*">
-                            <uraniumUIMaterial:DataGridColumn.CellItemTemplate>
-                                <DataTemplate>
-                                    <uraniumUI:ExpanderView>
-                                        <Label Text="{Binding Pass}" />
-                                    </uraniumUI:ExpanderView>
-                                </DataTemplate>
-                            </uraniumUIMaterial:DataGridColumn.CellItemTemplate>
-                            
-                        </uraniumUIMaterial:DataGridColumn>
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <VerticalStackLayout Grid.Row="0">
 
+                    <uraniumUIMaterial:TextField Title="Type site name to search for password"
+                                                 Text="{Binding NewPassword.SiteName, Mode=OneWayToSource}"/>
 
-                    </uraniumUIMaterial:DataGrid.Columns>
-                    
-                </uraniumUIMaterial:DataGrid>
+                </VerticalStackLayout>
 
+                <Grid Grid.Row="1" Margin="0, 0, 0, 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.ColumnSpan="4" 
+                            Margin="0, 5, 0, 0"
+                            Text="Search Password"
+                            Command="{Binding GeneratePasswordCommand}"/>
+
+                </Grid>
+                <ScrollView Grid.Row="2">
+                    <uraniumUIMaterial:DataGrid x:Name="Empty"
+                                                ItemsSource="{Binding Passwords}"
+                                                BackgroundColor="Transparent"
+                                                VerticalOptions="Fill"
+                                                HorizontalOptions="Fill">
+                        
+                        <uraniumUIMaterial:DataGrid.Columns>
+
+                            <uraniumUIMaterial:DataGridColumn ValueBinding="{Binding SiteName}" Width="*">
+                                <uraniumUIMaterial:DataGridColumn.TitleView>
+                                    <Label Text="Site Name"
+                                           FontSize="Title" 
+                                           TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center" />
+                                    
+                                </uraniumUIMaterial:DataGridColumn.TitleView>
+                            </uraniumUIMaterial:DataGridColumn>
+
+                        </uraniumUIMaterial:DataGrid.Columns>
+
+                    </uraniumUIMaterial:DataGrid>
+                </ScrollView>
             </Grid>
             
         </Grid>

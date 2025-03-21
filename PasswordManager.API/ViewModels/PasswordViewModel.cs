@@ -2,13 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using PasswordManager.API.Models;
 using PasswordManager.API.Utils.DataPersisters;
-using SQLite;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PasswordManager.API.ViewModels
 {
@@ -21,15 +15,15 @@ namespace PasswordManager.API.ViewModels
         private string genPass;
 
         [ObservableProperty]
-        private ObservableCollection<PasswordModel> passwords = [.. PasswordDataPersister.GetPasswords()];
+        private ObservableCollection<PasswordModel> passwords = [.. PasswordDataPersister.GetPasswords().Result];
 
         [RelayCommand]
-        void GetPasswords() => Passwords = [.. PasswordDataPersister.GetPasswords()];
+        async Task GetPasswords() => Passwords =  [.. await PasswordDataPersister.GetPasswords()];
 
         [RelayCommand]
-        void GeneratePassword()
+        async Task  GeneratePassword()
         {
-            GenPass = PasswordDataPersister.GetRandomGeneratedPassword(); 
+            GenPass = await PasswordDataPersister.GetRandomGeneratedPassword(); 
         }
 
         [RelayCommand]

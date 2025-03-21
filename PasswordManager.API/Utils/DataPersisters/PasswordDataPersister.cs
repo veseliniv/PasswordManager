@@ -1,12 +1,8 @@
 ﻿using PasswordManager.API.Models;
 using PasswordManager.DAL.PasswordManagerDbContextEntities.DbContextEntities;
 using PasswordManager.DAL.PasswordManagerDbContextEntities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PasswordManager.API.Utils.DataPersisters
 {
@@ -25,30 +21,30 @@ namespace PasswordManager.API.Utils.DataPersisters
             entities.Connection.Insert(newPassword);
         }
 
-        public static IEnumerable<PasswordModel> GetPasswords()
+        public static Task<IEnumerable<PasswordModel>> GetPasswords()
         {
             PasswordManagerDBEntities entities = new();
 
-            var siteModels = (from t in entities.Connection.Table<Password>()
-                              select new PasswordModel()
-                              {
-                                  Pass = t.Pass,
-                                  SiteName = t.SiteName
-                              });
+            IEnumerable<PasswordModel> siteModels = (from t in entities.Connection.Table<Password>()
+                                                           select new PasswordModel()
+                                                           {
+                                                               Pass = t.Pass,
+                                                               SiteName = t.SiteName
+                                                           });
 
-            return siteModels;
+            return Task.FromResult(siteModels);
         }
 
-        public static string GetRandomGeneratedPassword()
+        public static async Task<string> GetRandomGeneratedPassword()
         {
             int length = new Random().Next(1, 100);
             const string alphanumericCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>.?/|";
-            return GetRandomString(length, alphanumericCharacters);
+            return await GetRandomPasswordAsync(length, alphanumericCharacters);
         }
 
-        private static string GetRandomString(int length, IEnumerable<char> characterSet)
+        private static async Task<string> GetRandomPasswordAsync(int length, IEnumerable<char> characterSet)
         {
-            RNGCryptoServiceProvider cryptoServiceProvider = new();
+            RandomNumberGenerator cryptoServiceProvider =RandomNumberGenerator.Create();
             if (length < 0)
             {
                 throw new ArgumentException("length must not be negative", "length");
@@ -70,13 +66,20 @@ namespace PasswordManager.API.Utils.DataPersisters
 
             var bytes = new byte[length * 8];
             cryptoServiceProvider.GetBytes(bytes);
-            StringBuilder result = new ();
+            StringBuilder result = await GetResultPassword(length, characterArray, bytes);
+            return result.ToString();
+        }
+
+        private static Task<StringBuilder> GetResultPassword(int length, char[] characterArray, byte[] bytes)
+        {
+            StringBuilder result = new();
+
             for (int i = 0; i < length; i++)
             {
                 ulong value = BitConverter.ToUInt64(bytes, i * 8);
                 result.Append(characterArray[value % (uint)characterArray.Length]);
             }
-            return result.ToString();
+            return Task.FromResult(result);
         }
     }
 }

@@ -10,5 +10,7 @@
     <ShellContent
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage"/>
+    
+    <MenuFlyoutItem FlyoutItem.IsVisible="True"></MenuFlyoutItem>
 
 </Shell>
