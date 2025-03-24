@@ -8,6 +8,7 @@ namespace PasswordManager.API.Utils.DataPersisters
 {
     public class PasswordDataPersister
     {
+        
         public static void AddPassword(PasswordModel passwordModel)
         {
             PasswordManagerDBEntities entities = new();
@@ -25,13 +26,34 @@ namespace PasswordManager.API.Utils.DataPersisters
         {
             PasswordManagerDBEntities entities = new();
 
-            IEnumerable<PasswordModel> siteModels = (from t in entities.Connection.Table<Password>()
-                                                           select new PasswordModel()
-                                                           {
-                                                               Pass = t.Pass,
-                                                               SiteName = t.SiteName
-                                                           });
+            
+                    IEnumerable<PasswordModel> siteModels = from t in entities.Connection.Table<Password>()
+                                                             select new PasswordModel()
+                                                             {
+                                                                 Pass = t.Pass,
+                                                                 SiteName = t.SiteName
+                                                             };
+                    return Task.FromResult(siteModels);
+               
+        }
 
+        public static Task<IEnumerable<PasswordModel>> SearchPassword(string siteName)
+        {
+            PasswordManagerDBEntities entities = new();
+
+
+            IEnumerable<PasswordModel> siteModels = from t in entities.Connection.Table<Password>()
+                                                     where t.SiteName.Equals(siteName)
+                                                     select new PasswordModel()
+                                                     {
+                                                         Pass = t.Pass,
+                                                         SiteName = t.SiteName
+                                                     };
+            if(siteModels.Count().Equals(0))
+            {
+                Shell.Current.DisplayAlert("Nope", $"There is no such site '{siteName}'", "OK");
+            }
+            
             return Task.FromResult(siteModels);
         }
 

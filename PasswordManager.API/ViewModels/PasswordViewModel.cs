@@ -21,38 +21,40 @@ namespace PasswordManager.API.ViewModels
         async Task GetPasswords() => Passwords =  [.. await PasswordDataPersister.GetPasswords()];
 
         [RelayCommand]
+        async Task FoundPassword() => Passwords = [.. await PasswordDataPersister.SearchPassword(NewPassword.SiteName)];
+
+        [RelayCommand]
         async Task  GeneratePassword()
         {
             GenPass = await PasswordDataPersister.GetRandomGeneratedPassword(); 
         }
 
         [RelayCommand]
-        void AddPassword()
+        async Task AddPassword()
         {
             NewPassword.Pass = GenPass;
 
             if (!string.IsNullOrEmpty(NewPassword.Pass) && !string.IsNullOrEmpty(NewPassword.SiteName))
             {
                 PasswordDataPersister.AddPassword(NewPassword);
-                GetPasswords();
-                Shell.Current.DisplayAlert("Success", "Password added successfully", "OK");
+                await GetPasswords();
+                await Shell.Current.DisplayAlert("Success", "Password added successfully", "OK");
             }
             else
             {
                 if (string.IsNullOrEmpty(NewPassword.Pass) && !string.IsNullOrEmpty(NewPassword.SiteName))
                 {
-                    Shell.Current.DisplayAlert("Password", "Password field isn't filled", "OK");
+                    await Shell.Current.DisplayAlert("Password", "Password field isn't filled", "OK");
                 }
                 else if (string.IsNullOrEmpty(NewPassword.SiteName) && !string.IsNullOrEmpty(NewPassword.Pass))
                 {
-                    Shell.Current.DisplayAlert("Site Name", "Site Name field isn't filled", "OK");
+                    await Shell.Current.DisplayAlert("Site Name", "Site Name field isn't filled", "OK");
                 }
                 else
                 {
-                    Shell.Current.DisplayAlert("New Password", "Fill the required fields: Password and Site Name", "OK");
+                    await Shell.Current.DisplayAlert("New Password", "Fill the required fields: Password and Site Name", "OK");
                 }
             }
         }
-       
     }
 }
